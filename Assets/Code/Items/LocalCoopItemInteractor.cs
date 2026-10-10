@@ -5,7 +5,7 @@ namespace ChefGame.Items
 {
     /// <summary>
     /// Picks up the nearest nearby object tagged Item and attaches it to this
-    /// player's item holder. Pressing Interact again drops the held object.
+    /// player's item holder while Interact is held, then drops it on release.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ChefGame.Input.LocalCoopPlayerController))]
@@ -23,8 +23,8 @@ namespace ChefGame.Items
         private Rigidbody heldRigidbody;
         private bool heldRigidbodyWasKinematic;
         private bool heldRigidbodyUsedGravity;
+        private Collider[] playerColliders;
         private Collider[] heldColliders;
-        private bool[] heldColliderStates;
         private bool missingInteractActionLogged;
 
         public bool IsHoldingItem => isHoldingItem;
@@ -33,6 +33,7 @@ namespace ChefGame.Items
         private void Awake()
         {
             playerController = GetComponent<ChefGame.Input.LocalCoopPlayerController>();
+            playerColliders = GetComponentsInChildren<Collider>(true);
             if (interactionCenter == null)
                 interactionCenter = transform;
         }
@@ -69,25 +70,33 @@ namespace ChefGame.Items
             if (interactAction == null)
                 return false;
 
-            interactAction.performed += HandleInteract;
+            interactAction.performed += HandleInteractPressed;
+            interactAction.canceled += HandleInteractReleased;
             return true;
         }
 
         private void OnDisable()
         {
             if (interactAction != null)
-                interactAction.performed -= HandleInteract;
+            {
+                interactAction.performed -= HandleInteractPressed;
+                interactAction.canceled -= HandleInteractReleased;
+            }
 
             if (isHoldingItem)
                 DropItem();
         }
 
-        private void HandleInteract(InputAction.CallbackContext context)
+        private void HandleInteractPressed(InputAction.CallbackContext context)
+        {
+            if (!isHoldingItem)
+                TryPickUpItem();
+        }
+
+        private void HandleInteractReleased(InputAction.CallbackContext context)
         {
             if (isHoldingItem)
                 DropItem();
-            else
-                TryPickUpItem();
         }
 
         private void TryPickUpItem()
@@ -146,6 +155,21 @@ namespace ChefGame.Items
             heldItem.SetParent(itemHolder, true);
             heldItem.position = itemHolder.position;
 
+            // Keep held colliders enabled for contacts with the ground and
+            // world, while ignoring only this player's own hand colliders.
+            heldColliders = heldItem.GetComponentsInChildren<Collider>(true);
+            foreach (Collider itemCollider in heldColliders)
+            {
+                if (itemCollider == null)
+                    continue;
+
+                foreach (Collider playerCollider in playerColliders)
+                {
+                    if (playerCollider != null)
+                        Physics.IgnoreCollision(itemCollider, playerCollider, true);
+                }
+            }
+
             heldRigidbody = heldItem.GetComponent<Rigidbody>();
             if (heldRigidbody != null)
             {
@@ -153,14 +177,6 @@ namespace ChefGame.Items
                 heldRigidbodyUsedGravity = heldRigidbody.useGravity;
                 heldRigidbody.isKinematic = true;
                 heldRigidbody.useGravity = false;
-            }
-
-            heldColliders = heldItem.GetComponentsInChildren<Collider>(true);
-            heldColliderStates = new bool[heldColliders.Length];
-            for (int i = 0; i < heldColliders.Length; i++)
-            {
-                heldColliderStates[i] = heldColliders[i].enabled;
-                heldColliders[i].enabled = false;
             }
 
             isHoldingItem = true;
@@ -171,25 +187,30 @@ namespace ChefGame.Items
             if (heldItem != null)
                 heldItem.SetParent(null, true);
 
+            if (heldColliders != null)
+            {
+                foreach (Collider itemCollider in heldColliders)
+                {
+                    if (itemCollider == null)
+                        continue;
+
+                    foreach (Collider playerCollider in playerColliders)
+                    {
+                        if (playerCollider != null)
+                            Physics.IgnoreCollision(itemCollider, playerCollider, false);
+                    }
+                }
+            }
+
             if (heldRigidbody != null)
             {
                 heldRigidbody.useGravity = heldRigidbodyUsedGravity;
                 heldRigidbody.isKinematic = heldRigidbodyWasKinematic;
             }
 
-            if (heldColliders != null)
-            {
-                for (int i = 0; i < heldColliders.Length; i++)
-                {
-                    if (heldColliders[i] != null)
-                        heldColliders[i].enabled = heldColliderStates[i];
-                }
-            }
-
             heldItem = null;
             heldRigidbody = null;
             heldColliders = null;
-            heldColliderStates = null;
             isHoldingItem = false;
         }
 
