@@ -14,9 +14,12 @@ namespace ChefGame.Items
         [SerializeField] private List<GameObject> cutResultPrefabs = new List<GameObject>();
 
         public override ItemCategory Category => ItemCategory.Ingredient;
-        public bool CanBeCut => canBeCut;
+        public virtual bool CanBeCut => canBeCut;
         public GameObject CutEffectPrefab => cutEffectPrefab;
         public IReadOnlyList<GameObject> CutResultPrefabs => cutResultPrefabs;
+
+        /// <summary>Returns the designer-authored ingredient name for systems such as stove recipes.</summary>
+        public string GetName() => CustomName;
 
         public bool HasCutResults
         {

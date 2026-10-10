@@ -12,6 +12,9 @@ namespace ChefGame.Items
         public IngredientDefinition IngredientData => Definition as IngredientDefinition;
         public bool HasBeenCut => hasBeenCut;
 
+        /// <summary>Returns this ingredient's definition name, or an empty string if no definition is assigned.</summary>
+        public string GetName() => IngredientData != null ? IngredientData.GetName() : string.Empty;
+
         /// <returns>True only when cut results were spawned and this ingredient was scheduled for removal.</returns>
         public bool TryGetCut()
         {

@@ -4,7 +4,7 @@ namespace ChefGame.Items
 {
     /// <summary>Concrete tomato item type; cutting behavior and editable cut outputs come from IngredientDefinition.</summary>
     [CreateAssetMenu(fileName = "Tomato", menuName = "Chef Game/Items/Ingredients/Tomato")]
-    public sealed class TomatoDefinition : IngredientDefinition
+    public class TomatoDefinition : IngredientDefinition
     {
     }
 }

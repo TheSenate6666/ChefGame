@@ -17,4 +17,6 @@ MonoBehaviour:
     split effect.
   canBeCut: 1
   cutEffectPrefab: {fileID: 0}
-  cutResultPrefabs: []
+  cutResultPrefabs:
+  - {fileID: 1614628581427960876, guid: bdd00ec3edaeb44478555e9cc632ab2e, type: 3}
+  - {fileID: 1614628581427960876, guid: bdd00ec3edaeb44478555e9cc632ab2e, type: 3}
