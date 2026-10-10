@@ -17,9 +17,19 @@
                     "priority": 0
                 },
                 {
-                    "name": "New action",
+                    "name": "Backward",
                     "type": "Button",
-                    "id": "55067064-2478-4229-8e90-b038380c8d55",
+                    "id": "4c62c131-974f-4e69-a641-9f4258144f07",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "Forward",
+                    "type": "Button",
+                    "id": "a31badcd-3dbd-4abf-bc3c-62221c6aba4a",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -151,12 +161,67 @@
                 },
                 {
                     "name": "",
-                    "id": "f2d8a656-7bb1-4db5-8024-ca6021ccc623",
-                    "path": "",
+                    "id": "76e45d3c-9863-487a-84cc-168c137af245",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": ";WASD",
+                    "action": "Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c00e3e98-9d9e-4629-8eff-c2173743b8df",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrows",
+                    "action": "Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "137f9099-3de1-4170-9116-794c6acea37f",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cc39a0e-c399-44c1-bc97-87c7300def77",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "276d36d9-228f-4ef4-b6c2-0a321e7f31f3",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrows",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "979a7f88-85de-4947-8136-2c9751dab7bc",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

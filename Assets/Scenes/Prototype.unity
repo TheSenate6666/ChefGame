@@ -429,11 +429,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChefGame.Input.LocalCoopPlayerController
   inputActions: {fileID: -944628639613478452, guid: c4c25e5b3d35a9846aaa6e72162d801b, type: 3}
-  keyboardLayout: 0
-  movementAcceleration: 30
-  maximumSpeed: 5
+  inputScheme: 2
+  autoAssignGamepad: 1
+  gamepadSlot: 0
+  movementCamera: {fileID: 330585545}
+  movementAcceleration: 40
+  maximumSpeed: 7
   drag: 5
-  movementRadius: 8
+  depthMovementLimit: 2
+  screenEdgePadding: 0.03
 --- !u!1 &722847169
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,11 +564,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChefGame.Input.LocalCoopPlayerController
   inputActions: {fileID: -944628639613478452, guid: c4c25e5b3d35a9846aaa6e72162d801b, type: 3}
-  keyboardLayout: 1
-  movementAcceleration: 30
-  maximumSpeed: 5
+  inputScheme: 2
+  autoAssignGamepad: 1
+  gamepadSlot: 0
+  movementCamera: {fileID: 330585545}
+  movementAcceleration: 40
+  maximumSpeed: 7
   drag: 5
-  movementRadius: 8
+  depthMovementLimit: 2
+  screenEdgePadding: 0.03
 --- !u!1 &1140660229
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,7 +711,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!1 &1733908246
 GameObject:
@@ -843,7 +851,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 120
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
