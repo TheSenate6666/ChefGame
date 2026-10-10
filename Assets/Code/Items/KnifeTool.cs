@@ -29,11 +29,14 @@ namespace ChefGame.Items
 
         private void TryCutIngredient(Collider other)
         {
-            if (definition == null || !definition.CutsIngredients || other == null)
+            if (definition == null || other == null)
                 return;
 
             IngredientInstance ingredient = other.GetComponentInParent<IngredientInstance>();
             if (ingredient == null || !ingredient.CompareTag(itemTag))
+                return;
+
+            if (!definition.CanCut(ingredient.GetName()))
                 return;
 
             ingredient.TryGetCut();

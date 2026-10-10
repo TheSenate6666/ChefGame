@@ -6,4 +6,13 @@ namespace ChefGame.Items
         Ingredient,
         Utensil
     }
+
+    /// <summary>Stable gameplay identity for a specific item definition.</summary>
+    public enum ItemType
+    {
+        None = 0,
+        Tomato = 1,
+        TomatoHalf = 2,
+        Knife = 3
+    }
 }

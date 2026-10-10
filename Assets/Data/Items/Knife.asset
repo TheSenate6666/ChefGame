@@ -16,3 +16,5 @@ MonoBehaviour:
   description: A kitchen knife that cuts cuttable ingredients inside its trigger
     zone.
   cutsIngredients: 1
+  cuttableIngredientNames:
+  - Tomato

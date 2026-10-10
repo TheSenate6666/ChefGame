@@ -6,5 +6,6 @@ namespace ChefGame.Items
     [CreateAssetMenu(fileName = "Tomato", menuName = "Chef Game/Items/Ingredients/Tomato")]
     public class TomatoDefinition : IngredientDefinition
     {
+        public override ItemType TypeId => ItemType.Tomato;
     }
 }

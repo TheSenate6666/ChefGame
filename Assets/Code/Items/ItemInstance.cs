@@ -9,5 +9,6 @@ namespace ChefGame.Items
         [SerializeField] private ItemDefinition definition;
 
         public ItemDefinition Definition => definition;
+        public ItemType TypeId => definition != null ? definition.TypeId : ItemType.None;
     }
 }
