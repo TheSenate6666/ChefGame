@@ -27,7 +27,8 @@ namespace ChefGame.Input
         [SerializeField] private bool autoAssignGamepad = true;
         [SerializeField, Min(0)] private int gamepadSlot;
         [SerializeField] private Camera movementCamera;
-        [SerializeField, Min(0f)] private float movementAcceleration = 20f;
+        [SerializeField, Min(0f)] private float movementAcceleration = 40f;
+        [SerializeField, Min(0f)] private float movementZAcceleration = 20f;
         [SerializeField, Min(0f)] private float maximumSpeed = 4.5f;
         [SerializeField, Min(0f)] private float drag = 7f;
         [SerializeField, Min(0f)] private float depthMovementLimit = 2f;
@@ -38,10 +39,13 @@ namespace ChefGame.Input
         private InputAction moveAction;
         private InputAction backwardAction;
         private InputAction forwardAction;
+        private InputAction interactAction;
         private Gamepad assignedGamepad;
         private Vector3 movementCenter;
         private Vector3 velocity;
         private Renderer[] visualRenderers;
+
+        public InputAction InteractAction => interactAction;
 
         private string BindingGroup => inputScheme switch
         {
@@ -78,6 +82,7 @@ namespace ChefGame.Input
             moveAction = gameplayMap.FindAction("Move", true);
             backwardAction = gameplayMap.FindAction("Backward", true);
             forwardAction = gameplayMap.FindAction("Forward", true);
+            interactAction = gameplayMap.FindAction("Interact", true);
 
         }
 
@@ -193,13 +198,16 @@ namespace ChefGame.Input
             Vector2 planarInput = moveAction.ReadValue<Vector2>();
             float depthInput = (forwardAction.IsPressed() ? 1f : 0f) -
                                (backwardAction.IsPressed() ? 1f : 0f);
-            Vector3 input = new Vector3(planarInput.x, planarInput.y, depthInput);
-            if (input.sqrMagnitude > 1f)
-                input.Normalize();
-
             float deltaTime = Time.deltaTime;
-            if (input.sqrMagnitude > 0.0001f)
-                velocity += input * (movementAcceleration * deltaTime);
+            if (planarInput.sqrMagnitude > 0.0001f || Mathf.Abs(depthInput) > 0.0001f)
+            {
+                // Keep planar and depth acceleration independently tunable.
+                // The Input System already normalizes the 2D keyboard/gamepad
+                // Move value; do not normalize it together with depth input.
+                velocity.x += planarInput.x * movementAcceleration * deltaTime;
+                velocity.y += planarInput.y * movementAcceleration * deltaTime;
+                velocity.z += depthInput * movementZAcceleration * deltaTime;
+            }
             else
                 velocity = Vector3.MoveTowards(velocity, Vector3.zero, drag * deltaTime);
 
