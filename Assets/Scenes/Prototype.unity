@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 122873003}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.953, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -425,6 +425,7 @@ GameObject:
   - component: {fileID: 536795268}
   - component: {fileID: 536795269}
   - component: {fileID: 536795270}
+  - component: {fileID: 536795271}
   m_Layer: 0
   m_Name: PlayerHand1
   m_TagString: Untagged
@@ -465,9 +466,9 @@ MonoBehaviour:
   autoAssignGamepad: 1
   gamepadSlot: 0
   movementCamera: {fileID: 330585545}
-  movementAcceleration: 50
+  movementAcceleration: 40
   movementZAcceleration: 20
-  maximumSpeed: 7
+  maximumSpeed: 9
   drag: 7
   depthMovementLimit: 1
   screenEdgePadding: 0.03
@@ -490,6 +491,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   isHoldingItem: 0
+--- !u!54 &536795271
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536795267}
+  serializedVersion: 5
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &696069754
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,8 +542,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696069754}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.1600003, y: -2.083, z: 0.66}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -663,6 +691,7 @@ GameObject:
   - component: {fileID: 838472845}
   - component: {fileID: 838472846}
   - component: {fileID: 838472847}
+  - component: {fileID: 838472848}
   m_Layer: 0
   m_Name: PlayerHand2
   m_TagString: Untagged
@@ -705,7 +734,7 @@ MonoBehaviour:
   movementCamera: {fileID: 330585545}
   movementAcceleration: 40
   movementZAcceleration: 20
-  maximumSpeed: 7
+  maximumSpeed: 9
   drag: 7
   depthMovementLimit: 1
   screenEdgePadding: 0.03
@@ -728,6 +757,33 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   isHoldingItem: 0
+--- !u!54 &838472848
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838472844}
+  serializedVersion: 5
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!1 &1140660229
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +796,6 @@ GameObject:
   - component: {fileID: 1140660233}
   - component: {fileID: 1140660232}
   - component: {fileID: 1140660231}
-  - component: {fileID: 1140660234}
   m_Layer: 0
   m_Name: Hand1
   m_TagString: Hand
@@ -842,33 +897,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140660229}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &1140660234
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140660229}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!1 &1266259066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,7 +1140,6 @@ GameObject:
   - component: {fileID: 1733908250}
   - component: {fileID: 1733908249}
   - component: {fileID: 1733908248}
-  - component: {fileID: 1733908251}
   m_Layer: 0
   m_Name: Hand2
   m_TagString: Hand
@@ -1214,33 +1241,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733908246}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &1733908251
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733908246}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

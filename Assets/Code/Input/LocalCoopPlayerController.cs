@@ -40,9 +40,9 @@ namespace ChefGame.Input
         private InputAction backwardAction;
         private InputAction forwardAction;
         private InputAction interactAction;
+        private Rigidbody movementRigidbody;
         private Gamepad assignedGamepad;
         private Vector3 movementCenter;
-        private Vector3 velocity;
         private Renderer[] visualRenderers;
 
         public InputAction InteractAction => interactAction;
@@ -59,6 +59,12 @@ namespace ChefGame.Input
         {
             movementCenter = transform.position;
             visualRenderers = GetComponentsInChildren<Renderer>();
+            movementRigidbody = GetComponent<Rigidbody>();
+
+            if (movementRigidbody == null)
+                Debug.LogWarning($"{nameof(LocalCoopPlayerController)} on '{name}' has no Rigidbody on its root. Physics-aware movement requires a root Rigidbody.", this);
+            else
+                movementRigidbody.constraints |= RigidbodyConstraints.FreezeRotation;
 
             if (movementCamera == null)
                 movementCamera = Camera.main;
@@ -190,43 +196,59 @@ namespace ChefGame.Input
             return key;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            if (moveAction == null)
+            if (moveAction == null || movementRigidbody == null)
                 return;
 
             Vector2 planarInput = moveAction.ReadValue<Vector2>();
             float depthInput = (forwardAction.IsPressed() ? 1f : 0f) -
                                (backwardAction.IsPressed() ? 1f : 0f);
-            float deltaTime = Time.deltaTime;
+            float deltaTime = Time.fixedDeltaTime;
+            Vector3 currentVelocity = movementRigidbody.linearVelocity;
             if (planarInput.sqrMagnitude > 0.0001f || Mathf.Abs(depthInput) > 0.0001f)
             {
-                // Keep planar and depth acceleration independently tunable.
-                // The Input System already normalizes the 2D keyboard/gamepad
-                // Move value; do not normalize it together with depth input.
-                velocity.x += planarInput.x * movementAcceleration * deltaTime;
-                velocity.y += planarInput.y * movementAcceleration * deltaTime;
-                velocity.z += depthInput * movementZAcceleration * deltaTime;
+                // Integrate planar and depth acceleration separately while
+                // retaining collision velocity from the dynamic Rigidbody.
+                currentVelocity.x += planarInput.x * movementAcceleration * deltaTime;
+                currentVelocity.y += planarInput.y * movementAcceleration * deltaTime;
+                currentVelocity.z += depthInput * movementZAcceleration * deltaTime;
             }
             else
-                velocity = Vector3.MoveTowards(velocity, Vector3.zero, drag * deltaTime);
+            {
+                currentVelocity = Vector3.MoveTowards(currentVelocity, Vector3.zero, drag * deltaTime);
+            }
 
-            velocity = Vector3.ClampMagnitude(velocity, maximumSpeed);
+            currentVelocity = Vector3.ClampMagnitude(currentVelocity, maximumSpeed);
 
-            Vector3 proposedPosition = transform.position + velocity * deltaTime;
+            Vector3 proposedPosition = movementRigidbody.position + currentVelocity * deltaTime;
             float minimumZ = movementCenter.z - depthMovementLimit;
             float maximumZ = movementCenter.z + depthMovementLimit;
             float clampedZ = Mathf.Clamp(proposedPosition.z, minimumZ, maximumZ);
 
             if (!Mathf.Approximately(clampedZ, proposedPosition.z))
             {
-                bool movingOutward = proposedPosition.z > maximumZ ? velocity.z > 0f : velocity.z < 0f;
+                bool movingOutward = proposedPosition.z > maximumZ ? currentVelocity.z > 0f : currentVelocity.z < 0f;
                 if (movingOutward)
-                    velocity.z = 0f;
+                    currentVelocity.z = 0f;
                 proposedPosition.z = clampedZ;
             }
 
-            transform.position = ClampToScreen(proposedPosition);
+            Vector3 clampedPosition = ClampToScreen(proposedPosition);
+            Vector3 boundaryCorrection = clampedPosition - proposedPosition;
+            if (boundaryCorrection.sqrMagnitude > 0.000001f)
+            {
+                Vector3 inwardDirection = boundaryCorrection.normalized;
+                float outwardSpeed = Vector3.Dot(currentVelocity, inwardDirection);
+                if (outwardSpeed < 0f)
+                    currentVelocity -= inwardDirection * outwardSpeed;
+
+                // Correct position only when the hand reaches its depth or
+                // camera boundary; ordinary movement is handled by PhysX.
+                movementRigidbody.position = clampedPosition;
+            }
+
+            movementRigidbody.linearVelocity = currentVelocity;
         }
 
         private Vector3 ClampToScreen(Vector3 position)
